@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gülmelet Galvaniz Ocak</title>
+
+<style>
+body {
+    background: #000;
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    padding-top: 70px;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 60px;
+}
+
+#sicaklik {
+    font-size: 90px;
+    font-weight: bold;
+    color: red;
+}
+</style>
+</head>
+
+<body>
+
+<h1>GÜLMELET GALVANİZ OCAK</h1>
+
+<div id="sicaklik">--.- °C</div>
+
+<script>
+async function sicaklikOku() {
+    try {
+        const cevap = await fetch(
+            "https://api.thingspeak.com/channels/3523245/fields/1/last.json?t=" + Date.now()
+        );
+
+        const veri = await cevap.json();
+        const derece = parseFloat(veri.field1);
+
+        document.getElementById("sicaklik").innerHTML =
+            derece.toFixed(1) + " °C";
+
+    } catch (hata) {
+        document.getElementById("sicaklik").innerHTML = "Bağlantı Yok";
+    }
+}
+
+sicaklikOku();
+setInterval(sicaklikOku, 15000);
+</script>
+
+</body>
+</html>
